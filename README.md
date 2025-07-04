@@ -122,14 +122,13 @@ Fecha de Registro: The date and time when the job was first recorded by the scri
 job_id: A unique identifier for the job, used internally for deduplication.
 If you add additional columns manually to ScrapJobs.xlsx (e.g., "Notes", "Status"), the script will preserve these columns and their data when it updates the file, as long as you don't modify the existing Empresa, Puesto, or Link de Aplicación for those rows.
 
-# Extra
-# Step-by-Step Guide to Generating Web Selectors
+# Extra: Step-by-Step Guide to Generating Web Selectors
 The goal is to find unique and stable HTML attributes (like class, id, tag names, etc.) that identify the elements you want to extract (job listings, titles, links, locations). We'll primarily use the Chrome Developer Tools, but the process is similar in Firefox or Edge.
 
 ## Tools You'll Need
-### A Web Browser: Chrome, Firefox, or Edge.
+A Web Browser: Chrome, Firefox, or Edge.
 
-### Developer Tools: Built into your browser (usually accessed by pressing F12 or right-clicking and selecting "Inspect").
+Developer Tools: Built into your browser (usually accessed by pressing F12 or right-clicking and selecting "Inspect").
 
 ## The General Process
 ### 1. Open the Target Web Page: 
@@ -172,16 +171,16 @@ Hover over one complete job posting on the page. Try to select the largest possi
 Click on it. The corresponding HTML will be highlighted in the "Elements" tab.
 
 ### 2. Analyze the HTML: Look for a distinctive class name, ID, or tag.
-In our example, each job is within a <div class="job-card">.
-A good selector here would be div.job-card or simply .job-card. If there are other div elements with the same class not related to jobs, you might need to be more specific, like div#job-listings-container > div.job-card.
+In our example, each job is within a ```<div class="job-card">```
+A good selector here would be ```div.job-card``` or simply ```.job-card```. If there are other div elements with the same class not related to jobs, you might need to be more specific, like ``` div#job-listings-container > div.job-card.```
 
 ### 3. Test the Selector:
 Go to the "Console" tab in Developer Tools.
-Type $$('YOUR_SELECTOR_HERE') (for CSS selectors) or $x('YOUR_XPATH_HERE') (for XPath).
-For our example: $$('.job-card').
+Type ```$$('YOUR_SELECTOR_HERE')``` (for CSS selectors) or ```$x('YOUR_XPATH_HERE') ```(for XPath).
+For our example:``` $$('.job-card').```
 Press Enter.
 Check the output. It should return a NodeList or array containing all the job listing elements on the page. If it returns more than you expect, your selector is too broad. If it returns too few, it's too specific or incorrect.
-Your job_listing_selector for the example: div.job-card
+Your ```job_listing_selector``` for the example: ```div.job-card```
 
 ## Step 2: Identify the Job Title Selector (title_selector)
 This selector should target the HTML element containing the job title within a single job listing container.
@@ -192,31 +191,31 @@ Hover over the job title of one of the postings.
 Click on it.
 
 ### 2. Analyze the HTML (within the job listing's context):
-In our example, the title is inside an <h2> tag with class="job-title", which itself contains an <a> tag.
-Good selectors: h2.job-title, .job-title, or if the a tag directly contains the text, h2.job-title a.
-Choose the most direct element containing the text. If the title is always within the <a> tag, a might be better.
+In our example, the title is inside an ```<h2>``` tag with ```class="job-title"```, which itself contains an ```<a>``` tag.
+Good selectors: ```h2.job-title```, ```.job-title```, or if the ```a``` tag directly contains the text,``` h2.job-title a```.
+Choose the most direct element containing the text. If the title is always within the ```<a>``` tag, ```a``` might be better.
 
 ### 3. Test the Selector:
 From the "Elements" tab, right-click on the highlighted job listing container (the one you identified in Step 1).
-Select "Copy" -> "Copy selector" (this gives you a full CSS selector from the <html> tag, which is often too specific, but useful for quick testing).
-Paste it into the console: $$('body > div#job-listings-container > div.job-card:nth-child(1) > h2.job-title')
-More importantly, test your relative selector by mentally applying it within the selected job listing element. Your title_selector in the Python code will be used by job_element.select_one(), meaning it's already scoped to the job_element.
-For the example, h2.job-title would be correct for select_one.
-Your title_selector for the example: h2.job-title
+Select "Copy" -> "Copy selector" (this gives you a full CSS selector from the ```<html>``` tag, which is often too specific, but useful for quick testing).
+Paste it into the console: ```$$('body > div#job-listings-container > div.job-card:nth-child(1) > h2.job-title')```
+More importantly, test your relative selector by mentally applying it within the selected job listing element. Your ```title_selector``` in the Python code will be used by ```job_element.select_one()```, meaning it's already scoped to the ```job_element```.
+For the example, ```h2.job-title``` would be correct for ```select_one```.
+Your ```title_selector``` for the example: ```h2.job-title```
 
-## Step 3: Identify the Application Link Selector (link_selector)
-This selector should target the HTML element whose href attribute contains the URL to the full job description.
+## Step 3: Identify the Application Link Selector link_selector)
+This selector should target the HTML element whose ```href``` attribute contains the URL to the full job description.
 
 ### 1. Inspect the Job Link:
 Use the "Select an element" tool and click on the job title itself, as the link is often embedded there.
 
 ### 2. Analyze the HTML:
-In our example, the <a> tag inside the <h2> has the href.
-Selector: h2.job-title a or simply a if it's the only link within the job listing that points to the job details. Be specific enough to avoid other links.
+In our example, the ```<a>``` tag inside the ```<h2>``` has the ```href```.
+Selector: ```h2.job-title a``` or simply ```a``` if it's the only link within the job listing that points to the job details. Be specific enough to avoid other links.
 
 ### 3. Test the Selector:
-$$('h2.job-title a') in the console, but remember this is applied relative to the job_element.
-Your link_selector for the example: h2.job-title a
+```$$('h2.job-title a')``` in the console, but remember this is applied relative to the ```job_element```.
+Your ```link_selector``` for the example: ```h2.job-title a```
 
 ## Step 4: Identify the Location Selector (location_selector)
 This selector targets the element containing the job's location.
@@ -225,12 +224,12 @@ This selector targets the element containing the job's location.
 Use the "Select an element" tool and click on the location text.
 
 ### 2. Analyze the HTML:
-In our example, the location is within a <p> tag with class="job-location".
-Selector: p.job-location or .job-location.
+In our example, the location is within a ```<p>``` tag with ```class="job-location"```.
+Selector: ```p.job-location``` or ```.job-location```.
 
 ### 3. Test the Selector:
-$$('p.job-location') in the console.
-Your location_selector for the example: p.job-location
+```$$('p.job-location')``` in the console.
+Your ```location_selector``` for the example: ```p.job-location```
 
 ## Step 5: Identify the Next Page Button/Link Selector (next_page_selector for 'click' pagination)
 If a site uses "click" pagination, you need a selector for the "Next" button or link.
@@ -240,26 +239,26 @@ Navigate to a page with a "Next" button or link.
 Use the "Select an element" tool and click on the "Next" button/link.
 
 ### 2. Analyze the HTML:
-Look for distinctive id, class, data- attributes, or even the text content.
-Example: <button id="next-page-button">Next</button>, <a class="pagination-link next" href="...">Next »</a>
+Look for distinctive ```id```, ```class```, ```data-``` attributes, or even the text content.
+Example: ```<button id="next-page-button">Next</button>```, ```<a class="pagination-link next" href="...">Next »</a>```
 
 ### 3. Test the Selector:
-$$('#next-page-button') or $$('a.pagination-link.next').
+```$$('#next-page-button')``` or ```$$('a.pagination-link.next')```.
 Ensure it selects only the "Next" button/link and not other pagination elements.
-Your next_page_selector for the example: button#next-page-button or a.pagination-link.next
+Your ```next_page_selector``` for the example: ```button#next-page-button``` or ```a.pagination-link.next```
 
 ## Common Selector Types and Best Practices
 ### CSS Selectors (Recommended for Simplicity)
-By Tag Name: div, a, span, li
-By Class: .my-class, div.specific-class
-By ID: #my-id (IDs should be unique on a page, making them very reliable)
-By Attribute: [href], [data-automation-id='jobTitle'], a[target='_blank']
-Descendant Selector: div.parent p.child (selects <p class="child"> elements that are descendants of <div class="parent">)
-Child Selector: ul > li (selects <li> elements that are direct children of <ul>)
-Combinations: div#main-content a.job-link[data-type='full']
+By Tag Name: ```div```, ```a```, ```span```, ```li```
+By Class: ```.my-class```, ```div.specific-class```
+By ID: ```#my-id``` (IDs should be unique on a page, making them very reliable)
+By Attribute: ```[href]```, ```[data-automation-id='jobTitle']```, ```a[target='_blank']```
+Descendant Selector: ```div.parent p.child``` (selects ```<p class="child">``` elements that are descendants of ```<div class="parent">```)
+Child Selector: ```ul > li``` (selects ```<li>``` elements that are direct children of ```<ul>```)
+Combinations: ```div#main-content a.job-link[data-type='full']```
 
 ## How to Apply This to Your Existing SITE_CONFIGS
-Go through each entry in your SITE_CONFIGS dictionary.
+Go through each entry in your ```SITE_CONFIGS``` dictionary.
 
 ### 1. Open the base_url for that company.
 ### 2. Follow the steps above to identify the job_listing_selector, title_selector, link_selector, and location_selector.
