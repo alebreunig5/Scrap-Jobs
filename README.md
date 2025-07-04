@@ -132,12 +132,18 @@ The goal is to find unique and stable HTML attributes (like class, id, tag names
 ### Developer Tools: Built into your browser (usually accessed by pressing F12 or right-clicking and selecting "Inspect").
 
 ## The General Process
-### 1. Open the Target Web Page: Navigate to the career page you want to scrape.
-### 2. Open Developer Tools: Press F12 (Windows/Linux) or Cmd + Option + I (Mac), or right-click anywhere on the page and select "Inspect" or "Inspect Element."
-### 3. Use the Element Inspector Tool: This is the icon that looks like a mouse pointer over a square (often in the top-left of the Developer Tools panel). Click it, then hover over the elements on the web page to highlight them in the DOM (Document Object Model) tree.
-### 4. Identify the "Job Listing Container": This is the parent HTML element that encapsulates a single job posting (e.g., a div, li, article). You want a selector that returns all job postings on the page.
-### 5. Identify Individual Data Points: Once you have the job listing container, you'll drill down to find the selectors for the job title, application link, and location within that container.
-### 6. Test Your Selectors: Use the browser's console or the "Search" feature in the Elements tab to test if your selectors correctly identify the desired elements.
+### 1. Open the Target Web Page: 
+Navigate to the career page you want to scrape.
+### 2. Open Developer Tools: 
+Press F12 (Windows/Linux) or Cmd + Option + I (Mac), or right-click anywhere on the page and select "Inspect" or "Inspect Element."
+### 3. Use the Element Inspector Tool: 
+This is the icon that looks like a mouse pointer over a square (often in the top-left of the Developer Tools panel). Click it, then hover over the elements on the web page to highlight them in the DOM (Document Object Model) tree.
+### 4. Identify the "Job Listing Container": 
+This is the parent HTML element that encapsulates a single job posting (e.g., a div, li, article). You want a selector that returns all job postings on the page.
+### 5. Identify Individual Data Points: 
+Once you have the job listing container, you'll drill down to find the selectors for the job title, application link, and location within that container.
+### 6. Test Your Selectors: 
+Use the browser's console or the "Search" feature in the Elements tab to test if your selectors correctly identify the desired elements.
 
 ## Breakdown with Examples
 ```python
